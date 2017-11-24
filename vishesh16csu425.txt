@@ -1,0 +1,374 @@
+import java.awt.*;
+import javax.swing.*;
+import java.io.*;
+import java.awt.event.*;
+class myframe
+{
+	JFrame f;
+	JLabel jl1,jl2,jl3,jl4;
+	JTextField jt1,jt2,jt3,jt4;
+	JButton jb1,jb2,jb3,jb4,jb5,jb6,jb7;
+	myframe()
+	{
+		f=new JFrame("Train Management System");
+		f.getContentPane().setLayout(null);
+		jl1=new JLabel("Ticket Number");
+		jt1=new JTextField(15);
+		jl2=new JLabel("Name");
+		jt2=new JTextField(15);
+		jl3=new JLabel("Seat no.");
+		jt3=new JTextField(25);
+		jl4=new JLabel("Date of Reservation");
+		jt4=new JTextField(15);
+		jb1=new JButton("|<");
+		jb2=new JButton("<");
+		jb3=new JButton(">");
+		jb4=new JButton(">|");
+		jb5=new JButton("Add");
+		jb6=new JButton("Clear");
+		jb7=new JButton("Search");
+		jb4.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				fileread a=new fileread();
+				try
+				{
+					a.read();
+				}
+				catch(Exception e){}
+				jt1.setText(a.id.substring(0,8));
+				jt2.setText(a.name.substring(0,12));
+				jt3.setText(a.dept.substring(0,12));
+				jt4.setText(a.dob.substring(0,13));
+			}
+
+		});
+		jb2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				rownum a3=new rownum();
+				try
+				{
+					a3.read(jt1.getText());
+				}
+				catch(Exception e){}
+			}
+
+		});
+		jb7.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				search a=new search();
+				try
+				{
+					a.read(jt1.getText(),jt2.getText(),jt3.getText(),jt4.getText());
+				}
+				catch(Exception e){}
+				String jt11=jt1.getText();
+				String jt22=jt2.getText();
+				String jt33=jt3.getText();
+				String jt44=jt4.getText();
+				String p=" ";
+				for(int i=jt11.length();i<8;i++)
+				{
+					jt11=jt11+p;
+				}
+				for(int j=jt22.length();j<12;j++)
+				{
+					jt22=jt22+p;
+				}
+				for(int k=jt33.length();k<12;k++)
+				{
+					jt33=jt33+p;
+				}
+				for(int l=jt44.length();l<13;l++)
+				{
+					jt44=jt44+p;
+				}
+				if(jt11.equals(a.id)||jt22.equals(a.name)||jt33.equals(a.dept)||jt44.equals(a.dob))
+				{
+					jt1.setText(a.id.substring(0,7));
+					jt2.setText(a.name.substring(0,11));
+					jt3.setText(a.dept.substring(0,11));
+					jt4.setText(a.dob.substring(0,12));
+				}
+				else
+				{
+					JOptionPane.showMessageDialog(f, "No Match Found");
+				}
+			}
+
+		});
+
+		jb5.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				String id,name,dept,dob;
+				String id1=" ";
+				String name1=" ";
+				String dept1=" ";
+				String dojb1=" ";
+				id=jt1.getText().toString();
+				for(int i=id.length();i<7;i++)
+				{
+					id1=id1+" ";
+				}
+				name=jt2.getText().toString();
+				for(int j=name.length();j<11;j++)
+				{
+					name1=name1+" ";
+				}
+				dept=jt3.getText().toString();
+				for(int k=dept.length();k<11;k++)
+				{
+					dept1=dept1+" ";
+				}
+				dob=jt4.getText().toString();
+				for(int l=dob.length();l<12;l++)
+				{
+					dojb1=dojb1+" ";
+				}
+				try
+				{
+					FileWriter w1=new FileWriter("projecjt1.txt",true);
+					w1.write(System.getProperty("line.separator"));
+					w1.write(id+id1+"| ");
+					w1.write(name+name1+"| ");
+					w1.write(dept+dept1+"| ");
+					w1.write(dob+dojb1+"| ");
+					JOptionPane.showMessageDialog(f, "Data Added");
+					w1.close();
+				}
+				catch(Exception e){
+					JOptionPane.showMessageDialog(f, "Error");
+				}
+			}
+		});
+		jb1.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				data d=new data();
+				try
+				{
+					d.read(4);
+				}
+				catch(Exception e){}
+				jt1.setText(d.id);
+				jt2.setText(d.name);
+				jt3.setText(d.dept);
+				jt4.setText(d.dob);
+
+			}
+
+		});
+		jb2.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				rownum r=new rownum();
+				data d=new data();
+				try
+				{
+					int i=r.read(jt1.getText());
+					d.read(i-1);
+				}
+				catch(Exception e){}
+				jt1.setText(d.id);
+				jt2.setText(d.name);
+				jt3.setText(d.dept);
+				jt4.setText(d.dob);
+
+			}
+
+		});
+		jb3.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+				rownum r=new rownum();
+				data d=new data();
+				try
+				{
+					int i=r.read(jt1.getText());
+					d.read(i+1);
+				}
+				catch(Exception e){}
+				jt1.setText(d.id);
+				jt2.setText(d.name);
+				jt3.setText(d.dept);
+				jt4.setText(d.dob);
+
+			}
+
+		});
+		jb6.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent ae)
+			{
+
+				jt1.setText("");
+				jt2.setText("");
+				jt3.setText("");
+				jt4.setText("");
+
+			}
+
+		});
+
+		jl1.setBounds(50,20,120,27);
+		jl2.setBounds(50,90,120,27);
+		jl3.setBounds(50,160,120,27);
+		jl4.setBounds(50,230,120,27);
+		jt1.setBounds(220,20,180,27);
+		jt2.setBounds(220,90,180,27);
+		jt3.setBounds(220,160,180,27);
+		jt4.setBounds(220,230,180,27);
+		jb1.setBounds(50,300,80,27);
+		jb2.setBounds(140,300,80,27);
+		jb3.setBounds(230,300,80,27);
+		jb4.setBounds(320,300,80,27);
+		jb5.setBounds(50,370,80,27);
+		jb6.setBounds(185,370,80,27);
+		jb7.setBounds(320,370,80,27);
+		jl1.setForeground(Color.blue);
+		jl2.setForeground(Color.blue);
+		jl3.setForeground(Color.blue);
+		jl4.setForeground(Color.blue);
+		f.getContentPane().add(jl1);
+		f.getContentPane().add(jl2);
+		f.getContentPane().add(jl3);
+		f.getContentPane().add(jl4);
+		f.getContentPane().add(jt1);
+		f.getContentPane().add(jt2);
+		f.getContentPane().add(jt3);
+		f.getContentPane().add(jt4);
+		f.getContentPane().add(jb1);
+		f.getContentPane().add(jb2);
+		f.getContentPane().add(jb3);
+		f.getContentPane().add(jb4);
+		f.getContentPane().add(jb5);
+		f.getContentPane().add(jb6);
+		f.getContentPane().add(jb7);
+		f.setSize(500,500);
+
+		f.setVisible(true);
+	}
+}
+class rownum{
+	String line,id,name,dept,dob;
+	int i=0;
+	int read(String jt1)throws IOException{
+		FileReader fr=new FileReader("projecjt1.txt");
+		BufferedReader br=new BufferedReader(fr);
+		while((line=br.readLine())!=null)
+		{
+			i++;
+			id=line.substring(0,8);
+			name=line.substring(10,22);
+			dept=line.substring(24,36);
+			dob=line.substring(38,line.length()-2);
+			if(jt1.equals(id))
+			{
+				break;
+			}
+		}
+		br.close();
+		return i;
+	}
+}
+class data
+{
+	String line,id,name,dept,dob;
+	void read(int n)throws IOException{
+
+		FileReader fr=new FileReader("projecjt1.txt");
+		BufferedReader br=new BufferedReader(fr);
+		while(((line=br.readLine())!=null)&&(n>0))
+		{
+			id=line.substring(0,8);
+			name=line.substring(10,22);
+			dept=line.substring(24,36);
+			dob=line.substring(38,line.length()-2);
+			n--;
+		}
+		br.close();
+	}
+}
+class search
+{
+	String line,id,name,dept,dob;
+	void read(String jt1,String jt2,String jt3,String jt4)throws IOException{
+
+		FileReader fr=new FileReader("projecjt1.txt");
+		BufferedReader br=new BufferedReader(fr);
+		String p=" ";
+		while((line=br.readLine())!=null)
+		{
+			id=line.substring(0,8);
+			name=line.substring(10,22);
+			dept=line.substring(24,36);
+			dob=line.substring(38,line.length()-2);
+			for(int i=jt1.length();i<8;i++)
+			{
+				jt1=jt1+p;
+			}
+			for(int j=jt2.length();j<12;j++)
+			{
+				jt2=jt2+p;
+			}
+			for(int k=jt3.length();k<12;k++)
+			{
+				jt3=jt3+p;
+			}
+			for(int l=jt4.length();l<13;l++)
+			{
+				jt4=jt4+p;
+			}
+			if(jt1.equals(id)||jt2.equals(name)||jt3.equals(dept)||jt4.equals(dob))
+			{
+				break;
+			}
+		}
+		br.close();
+	}
+}
+class fileread
+{
+	String line,id,name,dept,dob;
+	void read()throws IOException{
+
+		FileReader fr=new FileReader("projecjt1.txt");
+		BufferedReader br=new BufferedReader(fr);
+		while((line=br.readLine())!=null)
+		{
+			id=line.substring(0,9);
+			name=line.substring(10,23);
+			dept=line.substring(24,37);
+			dob=line.substring(38,line.length()-1);
+			System.out.print(id);
+			System.out.print(name);
+			System.out.print(dept);
+			System.out.println(dob);
+		}
+		br.close();
+	}
+}
+class project{
+	public static void main(String [] args) throws IOException
+	{
+		fileread f=new fileread();
+		f.read();
+		SwingUtilities.invokeLater(new Runnable()
+		{
+			public void run()
+			{
+				new myframe();
+			}
+		});
+	}
+}
